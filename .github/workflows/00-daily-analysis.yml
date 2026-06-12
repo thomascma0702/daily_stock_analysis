@@ -1,29 +1,29 @@
 name: 每日股票分析
 
 on:
-  # 定时触发 - 每天北京时间 06:00 (UTC 10:00)
+  # 定時觸發 - 每天香港時間 06:00 (UTC 10:00)
   schedule:
-    - cron: '0 22 * * 1-5'     # 周一到周五，UTC 10:00 = 北京时间 18:00
+    - cron: '0 22 * * 1-5'     # 周一到周五，UTC 10:00 = 北京時間 18:00
   
-  # 手动触发
+  # 手動觸發
   workflow_dispatch:
     inputs:
       mode:
-        description: '运行模式'
+        description: '運作模式'
         required: true
         default: 'full'
         type: choice
         options:
-          - full          # 完整分析（股票+大盘）
-          - market-only   # 仅大盘复盘
-          - stocks-only   # 仅股票分析
+          - full          # 完整分析（股票+大盤）
+          - market-only   # 僅大盤複盤
+          - stocks-only   # 僅股票分析
       force_run:
-        description: '强制运行（跳过交易日检查）'
+        description: '強制運轉（跳過交易日檢查）'
         required: false
         default: false
         type: boolean
 
-# 并发控制：同一时间只运行一个分析任务
+# 並發控制：同一時間只執行一個分析任務
 concurrency:
   group: stock-analysis
   cancel-in-progress: false
@@ -89,11 +89,7 @@ jobs:
           OPENAI_API_KEYS: ${{ secrets.OPENAI_API_KEYS }}
           OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL || secrets.OPENAI_BASE_URL }}
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL || secrets.OPENAI_MODEL }}
-
-          # DeepSeek
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          DEEPSEEK_API_KEYS: ${{ secrets.DEEPSEEK_API_KEYS }}
-          
+                  
           # Anthropic / Claude
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_API_KEYS: ${{ secrets.ANTHROPIC_API_KEYS }}
@@ -232,7 +228,7 @@ jobs:
           # 数据源
           # ==========================================
           TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
-          # Longbridge OpenAPI（美股/港股实时行情字段补充；不设则仅 YFinance/AkShare，无 [Longbridge] 调用）
+          # Longbridge OpenAPI（美股/港股即時行情字段補充；不設則僅 YFinance/AkShare，無 [Longbridge] 调用）
           LONGBRIDGE_OAUTH_CLIENT_ID: ${{ vars.LONGBRIDGE_OAUTH_CLIENT_ID || secrets.LONGBRIDGE_OAUTH_CLIENT_ID }}
           LONGBRIDGE_OAUTH_TOKEN_CACHE_B64: ${{ secrets.LONGBRIDGE_OAUTH_TOKEN_CACHE_B64 }}
           LONGBRIDGE_APP_KEY: ${{ secrets.LONGBRIDGE_APP_KEY }}
@@ -269,12 +265,7 @@ jobs:
           # 方式一：企业微信 Webhook
           WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
           WECHAT_MSG_TYPE: ${{ vars.WECHAT_MSG_TYPE || secrets.WECHAT_MSG_TYPE || 'markdown' }}
-          
-          # 方式二：飞书 Webhook
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
-          FEISHU_WEBHOOK_KEYWORD: ${{ vars.FEISHU_WEBHOOK_KEYWORD || secrets.FEISHU_WEBHOOK_KEYWORD }}
-          
+                    
           # 方式三：Telegram
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -347,7 +338,7 @@ jobs:
           # ==========================================
           # 自选股配置
           # ==========================================
-          STOCK_LIST: ${{ vars.STOCK_LIST || secrets.STOCK_LIST || '600519' }}
+          STOCK_LIST: ${{ vars.STOCK_LIST || secrets.STOCK_LIST }}
           MARKET_REVIEW_REGION: ${{ vars.MARKET_REVIEW_REGION }}
           MARKET_REVIEW_COLOR_SCHEME: ${{ vars.MARKET_REVIEW_COLOR_SCHEME || secrets.MARKET_REVIEW_COLOR_SCHEME || 'green_up' }}
           
